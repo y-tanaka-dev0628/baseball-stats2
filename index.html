@@ -1,86 +1,110 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <title>野球スタッツ管理ツール</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>野球スタッツ管理ツール</h1>
+  <h1>野球スタッツ管理ツール</h1>
 
-<h2>試合情報</h2>
+  <h2>試合情報</h2>
 
-<label>
-対戦相手：
-<input id="opponent" type="text">
-</label>
+  <label>
+    対戦相手：
+    <input id="opponent" type="text">
+  </label>
 
-<label>
-日付：
-<input id="date" type="date">
-</label>
+  <label>
+    日付：
+    <input id="date" type="date">
+  </label>
 
-<label>
-場所：
-<input id="location" type="text">
-</label>
+  <label>
+    場所：
+    <input id="location" type="text">
+  </label>
 
-<button id="addGameBtn">試合を追加</button>
+  <button id="addGameBtn">試合を追加</button>
 
-<hr>
+  <hr>
 
-<h2>打席入力</h2>
+  <h2>打席入力</h2>
 
-<label>
-試合選択：
-<select id="gameSelect"></select>
-</label>
+  <label>
+    試合選択：
+    <select id="gameSelect"></select>
+  </label>
 
-<label>
-結果：
-<select id="result">
-  <option>単打</option>
-  <option>二塁打</option>
-  <option>三塁打</option>
-  <option>本塁打</option>
-  <option>ゴロ</option>
-  <option>フライ</option>
-  <option>三振</option>
-  <option>四球</option>
-  <option>死球</option>
-</select>
-</label>
+  <br><br>
 
-<label>
-方向：
-<select id="direction">
-  <option>投手方向</option>
-  <option>一塁方向</option>
-  <option>二塁方向</option>
-  <option>三塁方向</option>
-  <option>遊撃方向</option>
-  <option>左翼方向</option>
-  <option>中堅方向</option>
-  <option>右翼方向</option>
-</select>
-</label>
+  <label>
+    結果：
+    <select id="result">
+      <option>単打</option>
+      <option>二塁打</option>
+      <option>三塁打</option>
+      <option>本塁打</option>
+      <option>ゴロ</option>
+      <option>フライ</option>
+      <option>三振</option>
+      <option>四球</option>
+      <option>死球</option>
+    </select>
+  </label>
 
-<label>
-打球種類：
-<select id="battedBallType">
-  <option>ゴロ</option>
-  <option>フライ</option>
-  <option>ライナー</option>
-</select>
-</label>
+  <br><br>
 
-<label>
-打点：
-<input id="rbi" type="number" value="0">
-</label>
+  <label>
+    方向：
+    <select id="direction">
+      <option>投手方向</option>
+      <option>一塁方向</option>
+      <option>二塁方向</option>
+      <option>三塁方向</option>
+      <option>遊撃方向</option>
+      <option>左翼方向</option>
+      <option>中堅方向</option>
+      <option>右翼方向</option>
+    </select>
+  </label>
 
-<button id="addAtBatBtn">打席を追加</button>
+  <br><br>
+
+  <label>
+    打球種類：
+    <select id="battedBallType">
+      <option>ゴロ</option>
+      <option>フライ</option>
+      <option>ライナー</option>
+    </select>
+  </label>
+
+  <br><br>
+
+  <label>
+    打点：
+    <input id="rbi" type="number" value="0">
+  </label>
+
+  <br><br>
+
+  <button id="addAtBatBtn">打席を追加</button>
+
+  <hr>
+
+  <h2>通算成績</h2>
+
+  <div id="stats">
+
+   <p>打数：<span id="ab">0</span></p>
+<p>安打：<span id="hits">0</span></p>
+<p>打率：<span id="avg">.000</span></p>
+
+</div>
 
 <hr>
 
@@ -97,7 +121,10 @@
       <th>削除</th>
     </tr>
   </thead>
-  <tbody></tbody>
+
+  <tbody>
+  </tbody>
+
 </table>
 
 <script src="app.js"></script>
