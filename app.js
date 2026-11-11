@@ -124,21 +124,33 @@ document
     `;
 
     tr.querySelector(".deleteBtn")
-      .addEventListener("click", () => {
+  .addEventListener("click", () => {
 
-        tr.remove();
+    tr.remove();
 
-        updateStats();
+    atBats = atBats.filter(
+  item => item.id !== atBat.id
+);
 
-      });
+    localStorage.setItem(
+      "atBats",
+      JSON.stringify(atBats)
+    );
+
+    updateStats();
+
+  });
+
 
       const atBat = {
+  id: Date.now(),
   gameId,
   result,
   direction,
   battedBallType,
   rbi
 };
+
 
 atBats.push(atBat);
 
@@ -234,13 +246,22 @@ function loadAtBats() {
     `;
 
     tr.querySelector(".deleteBtn")
-      .addEventListener("click", () => {
+  .addEventListener("click", () => {
 
-        tr.remove();
+    tr.remove();
 
-        updateStats();
+    atBats = atBats.filter(
+      item => item.id !== atBat.id
+    );
 
-      });
+    localStorage.setItem(
+      "atBats",
+      JSON.stringify(atBats)
+    );
+
+    updateStats();
+
+  });
 
     tbody.appendChild(tr);
 
