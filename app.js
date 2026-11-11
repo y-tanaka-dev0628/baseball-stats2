@@ -151,10 +151,6 @@ tbody.appendChild(tr);
 
 updateStats();
 
-    tbody.appendChild(tr);
-
-    updateStats();
-
   });
 
 function updateStats() {
@@ -212,4 +208,47 @@ function updateStats() {
 
 }
 
+function loadAtBats() {
+
+  const tbody =
+    document.querySelector(
+      "#atBatTable tbody"
+    );
+
+  atBats.forEach(atBat => {
+
+    const tr =
+      document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${atBat.gameId}</td>
+      <td>${atBat.result}</td>
+      <td>${atBat.direction}</td>
+      <td>${atBat.battedBallType}</td>
+      <td>${atBat.rbi}</td>
+      <td>
+        <button class="deleteBtn">
+          削除
+        </button>
+      </td>
+    `;
+
+    tr.querySelector(".deleteBtn")
+      .addEventListener("click", () => {
+
+        tr.remove();
+
+        updateStats();
+
+      });
+
+    tbody.appendChild(tr);
+
+  });
+
+  updateStats();
+
+}
+
 updateGameSelect();
+loadAtBats();
