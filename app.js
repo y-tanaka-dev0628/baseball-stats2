@@ -231,6 +231,13 @@ function updateStats() {
           / (atBatsCount + walks + hitByPitch)
         ).toFixed(3);
 
+  const opsValue =
+    (Number(obp) + Number(slg)).toFixed(3);
+  const ops =
+    opsValue.startsWith("0.")
+      ? opsValue.slice(1)
+      : opsValue;
+
   document.getElementById("ab").textContent =
     atBatsCount;
 
@@ -245,6 +252,9 @@ function updateStats() {
 
   document.getElementById("obp").textContent =
     obp;
+
+  document.getElementById("ops").textContent =
+    ops;
 
 }
 
