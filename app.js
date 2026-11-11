@@ -169,6 +169,8 @@ function updateStats() {
 
   let atBatsCount = 0;
   let hits = 0;
+  let walks = 0;
+  let hitByPitch = 0;
 
   const rows =
     document.querySelectorAll(
@@ -180,26 +182,24 @@ function updateStats() {
     const result =
       row.cells[1].textContent;
 
-    if (
-      result === "単打" ||
-      result === "二塁打" ||
-      result === "三塁打" ||
-      result === "本塁打"
-    ) {
-
+    if ([
+      "単打",
+      "二塁打",
+      "三塁打",
+      "本塁打"
+    ].includes(result)) {
       hits++;
       atBatsCount++;
-
-    }
-
-    else if (
-      result === "ゴロ" ||
-      result === "フライ" ||
-      result === "三振"
-    ) {
-
+    } else if ([
+      "ゴロ",
+      "フライ",
+      "三振"
+    ].includes(result)) {
       atBatsCount++;
-
+    } else if (result === "四球") {
+      walks++;
+    } else if (result === "死球") {
+      hitByPitch++;
     }
 
   });
@@ -209,6 +209,14 @@ function updateStats() {
       ? ".000"
       : (hits / atBatsCount).toFixed(3);
 
+  const obp =
+    (atBatsCount + walks + hitByPitch) === 0
+      ? ".000"
+      : (
+          (hits + walks + hitByPitch)
+          / (atBatsCount + walks + hitByPitch)
+        ).toFixed(3);
+
   document.getElementById("ab").textContent =
     atBatsCount;
 
@@ -217,6 +225,9 @@ function updateStats() {
 
   document.getElementById("avg").textContent =
     avg;
+
+  document.getElementById("obp").textContent =
+    obp;
 
 }
 
