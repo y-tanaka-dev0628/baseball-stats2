@@ -28,7 +28,11 @@ document.getElementById("addGameBtn")
       document.getElementById("location").value;
 
     const game = {
-      id: games.length + 1,
+      id: games.reduce(
+        (maxId, existingGame) =>
+          Math.max(maxId, Number(existingGame.id) || 0),
+        0
+      ) + 1,
       opponent,
       date,
       location
@@ -45,7 +49,47 @@ updateGameSelect();
 
   });
 
-function updateGameSelect() {
+  document.getElementById("deleteGameBtn")
+    .addEventListener("click", () => {
+
+      const gameId =
+        document.getElementById("gameSelect").value;
+
+      if (!gameId) {
+        return;
+      }
+
+      const relatedAtBats =
+        atBats.filter(item => String(item.gameId) === gameId);
+
+      const game =
+        games.find(item => String(item.id) === gameId);
+
+      if (!game) {
+        return;
+      }
+
+      const gameName =
+        `${game.opponent} (${game.date})`;
+      const message =
+        `「${gameName}」を削除しますか？関連する打席${relatedAtBats.length}件も削除されます。`;
+
+      if (!window.confirm(message)) {
+        return;
+      }
+
+      games = games.filter(item => String(item.id) !== gameId);
+      atBats = atBats.filter(item => String(item.gameId) !== gameId);
+
+      localStorage.setItem("games", JSON.stringify(games));
+      localStorage.setItem("atBats", JSON.stringify(atBats));
+
+      updateGameSelect();
+      loadAtBats();
+
+    });
+
+  function updateGameSelect() {
 
   const select =
     document.getElementById("gameSelect");
@@ -74,6 +118,11 @@ document
 
     const gameId =
       document.getElementById("gameSelect").value;
+
+    if (!gameId) {
+      alert("先に試合を追加してください。");
+      return;
+    }
 
     const result =
       document.getElementById("result").value;
@@ -264,6 +313,8 @@ function loadAtBats() {
     document.querySelector(
       "#atBatTable tbody"
     );
+
+  tbody.innerHTML = "";
 
   atBats.forEach(atBat => {
 
