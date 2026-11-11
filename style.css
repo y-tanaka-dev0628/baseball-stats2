@@ -8,6 +8,29 @@ table{
   width:100%;
 }
 
+.table-container{
+  overflow-x:auto;
+}
+
+.delete-game-button{
+  margin-left:6px;
+  background-color:#c62828;
+  border:1px solid #a61f1f;
+  border-radius:4px;
+  color:#fff;
+  cursor:pointer;
+  padding:4px 8px;
+}
+
+.delete-game-button:hover{
+  background-color:#a61f1f;
+}
+
+.delete-game-button:focus-visible{
+  outline:2px solid #222;
+  outline-offset:2px;
+}
+
 th,td{
   border:1px solid #ccc;
   padding:8px;

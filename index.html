@@ -28,7 +28,29 @@
     <input id="location" type="text">
   </label>
 
-  <button id="addGameBtn">試合を追加</button>
+  <button id="addGameBtn" type="button">試合を追加</button>
+  <button id="cancelGameEditBtn" type="button" hidden>編集をキャンセル</button>
+
+  <h3>試合一覧</h3>
+  <div class="table-container">
+    <table id="gameTable">
+      <thead>
+        <tr>
+          <th>日付</th>
+          <th>対戦相手</th>
+          <th>場所</th>
+          <th>打数</th>
+          <th>安打</th>
+          <th>打率</th>
+          <th>出塁率</th>
+          <th>長打率</th>
+          <th>OPS</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
   <hr>
 
@@ -38,7 +60,6 @@
     試合選択：
     <select id="gameSelect"></select>
   </label>
-  <button id="deleteGameBtn" type="button">試合を削除</button>
 
   <br><br>
 
