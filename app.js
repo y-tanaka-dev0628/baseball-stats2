@@ -6,6 +6,12 @@ let games =
     localStorage.getItem("games")
   ) || [];
 
+  let atBats =
+  JSON.parse(
+    localStorage.getItem("atBats")
+  ) || [];
+
+
 document.getElementById("addGameBtn")
   .addEventListener("click", () => {
 
@@ -125,6 +131,25 @@ document
         updateStats();
 
       });
+
+      const atBat = {
+  gameId,
+  result,
+  direction,
+  battedBallType,
+  rbi
+};
+
+atBats.push(atBat);
+
+localStorage.setItem(
+  "atBats",
+  JSON.stringify(atBats)
+);
+
+tbody.appendChild(tr);
+
+updateStats();
 
     tbody.appendChild(tr);
 
