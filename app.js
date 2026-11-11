@@ -1,5 +1,10 @@
 
-console.log("app.js読み込み成功");let games = [];
+console.log("app.js読み込み成功");
+
+let games =
+  JSON.parse(
+    localStorage.getItem("games")
+  ) || [];
 
 document.getElementById("addGameBtn")
   .addEventListener("click", () => {
@@ -25,7 +30,12 @@ document.getElementById("addGameBtn")
 
     games.push(game);
 
-    updateGameSelect();
+localStorage.setItem(
+  "games",
+  JSON.stringify(games)
+);
+
+updateGameSelect();
 
   });
 
@@ -176,3 +186,5 @@ function updateStats() {
     avg;
 
 }
+
+updateGameSelect();
