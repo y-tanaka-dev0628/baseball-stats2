@@ -169,6 +169,7 @@ function updateStats() {
 
   let atBatsCount = 0;
   let hits = 0;
+  let totalBases = 0;
   let walks = 0;
   let hitByPitch = 0;
 
@@ -182,13 +183,21 @@ function updateStats() {
     const result =
       row.cells[1].textContent;
 
-    if ([
-      "単打",
-      "二塁打",
-      "三塁打",
-      "本塁打"
-    ].includes(result)) {
+    if (result === "単打") {
       hits++;
+      totalBases++;
+      atBatsCount++;
+    } else if (result === "二塁打") {
+      hits++;
+      totalBases += 2;
+      atBatsCount++;
+    } else if (result === "三塁打") {
+      hits++;
+      totalBases += 3;
+      atBatsCount++;
+    } else if (result === "本塁打") {
+      hits++;
+      totalBases += 4;
       atBatsCount++;
     } else if ([
       "ゴロ",
@@ -209,6 +218,11 @@ function updateStats() {
       ? ".000"
       : (hits / atBatsCount).toFixed(3);
 
+  const slg =
+    atBatsCount === 0
+      ? ".000"
+      : (totalBases / atBatsCount).toFixed(3);
+
   const obp =
     (atBatsCount + walks + hitByPitch) === 0
       ? ".000"
@@ -225,6 +239,9 @@ function updateStats() {
 
   document.getElementById("avg").textContent =
     avg;
+
+  document.getElementById("slg").textContent =
+    slg;
 
   document.getElementById("obp").textContent =
     obp;
