@@ -3,6 +3,37 @@ body{
   margin:20px;
 }
 
+.view-tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:20px;
+  border-bottom:1px solid #ccc;
+}
+
+.view-tab{
+  background:#f2f2f2;
+  border:1px solid #ccc;
+  border-bottom:0;
+  border-radius:6px 6px 0 0;
+  cursor:pointer;
+  padding:10px 16px;
+}
+
+.view-tab.active{
+  background:#1565c0;
+  border-color:#1565c0;
+  color:#fff;
+}
+
+.view-tab:focus-visible{
+  outline:2px solid #222;
+  outline-offset:2px;
+}
+
+.app-view[hidden]{
+  display:none;
+}
+
 table{
   border-collapse:collapse;
   width:100%;
@@ -12,21 +43,41 @@ table{
   overflow-x:auto;
 }
 
-.delete-game-button{
+.edit-at-bat-button,
+.delete-game-button,
+.delete-at-bat-button{
   margin-left:6px;
-  background-color:#c62828;
-  border:1px solid #a61f1f;
+  border:1px solid transparent;
   border-radius:4px;
-  color:#fff;
   cursor:pointer;
   padding:4px 8px;
 }
 
-.delete-game-button:hover{
+.edit-at-bat-button{
+  background-color:#1565c0;
+  border-color:#0d4f9b;
+  color:#fff;
+}
+
+.edit-at-bat-button:hover{
+  background-color:#0d4f9b;
+}
+
+.delete-game-button,
+.delete-at-bat-button{
+  background-color:#c62828;
+  border-color:#a61f1f;
+  color:#fff;
+}
+
+.delete-game-button:hover,
+.delete-at-bat-button:hover{
   background-color:#a61f1f;
 }
 
-.delete-game-button:focus-visible{
+.edit-at-bat-button:focus-visible,
+.delete-game-button:focus-visible,
+.delete-at-bat-button:focus-visible{
   outline:2px solid #222;
   outline-offset:2px;
 }

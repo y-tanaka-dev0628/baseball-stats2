@@ -12,6 +12,48 @@ let games =
   ) || [];
 
 let editingGameId = null;
+let editingAtBatId = null;
+
+function activateView(activeViewId) {
+  document.querySelectorAll(".view-tab").forEach(tab => {
+    const isActive = tab.dataset.view === activeViewId;
+    tab.classList.toggle("active", isActive);
+    tab.setAttribute("aria-selected", String(isActive));
+    tab.tabIndex = isActive ? 0 : -1;
+  });
+
+  document.querySelectorAll(".app-view").forEach(view => {
+    view.hidden = view.id !== activeViewId;
+  });
+}
+
+document.querySelectorAll(".view-tab").forEach(tab => {
+  tab.tabIndex = tab.getAttribute("aria-selected") === "true" ? 0 : -1;
+  tab.addEventListener("click", () => {
+    activateView(tab.dataset.view);
+  });
+  tab.addEventListener("keydown", event => {
+    const tabs = [...document.querySelectorAll(".view-tab")];
+    const currentIndex = tabs.indexOf(tab);
+    let nextIndex;
+
+    if (event.key === "ArrowRight") {
+      nextIndex = (currentIndex + 1) % tabs.length;
+    } else if (event.key === "ArrowLeft") {
+      nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    } else if (event.key === "Home") {
+      nextIndex = 0;
+    } else if (event.key === "End") {
+      nextIndex = tabs.length - 1;
+    } else {
+      return;
+    }
+
+    event.preventDefault();
+    tabs[nextIndex].focus();
+    tabs[nextIndex].click();
+  });
+});
 
 document.getElementById("addGameBtn")
   .addEventListener("click", () => {
@@ -80,6 +122,7 @@ function startGameEdit(gameId) {
     return;
   }
 
+  activateView("inputView");
   editingGameId = game.id;
   document.getElementById("opponent").value = game.opponent || "";
   document.getElementById("date").value = game.date || "";
@@ -114,6 +157,12 @@ function deleteGame(gameId) {
 
   if (String(editingGameId) === String(gameId)) {
     cancelGameEdit();
+  }
+  if (
+    editingAtBatId !== null &&
+    !atBats.some(item => String(item.id) === String(editingAtBatId))
+  ) {
+    cancelAtBatEdit();
   }
 
   localStorage.setItem("games", JSON.stringify(games));
@@ -280,8 +329,7 @@ function updateGameList() {
   });
 }
 
-document
-  .getElementById("addAtBatBtn")
+document.getElementById("addAtBatBtn")
   .addEventListener("click", () => {
 
     const gameId =
@@ -294,93 +342,161 @@ document
 
     const result =
       document.getElementById("result").value;
-
     let direction =
       document.getElementById("direction").value;
-
     let battedBallType =
       document.getElementById("battedBallType").value;
 
-    const rbi =
-      document.getElementById("rbi").value;
-
-    const noDirectionResults = [
-      "三振",
-      "四球",
-      "死球"
-    ];
-
-    if (
-      noDirectionResults.includes(result)
-    ) {
-
+    if (["三振", "四球", "死球"].includes(result)) {
       direction = "-";
       battedBallType = "-";
-
     }
 
-    const tbody =
-      document.querySelector(
-        "#atBatTable tbody"
+    const atBatData = {
+      gameId,
+      result,
+      direction,
+      battedBallType,
+      rbi: document.getElementById("rbi").value
+    };
+
+    if (editingAtBatId !== null) {
+      const atBat = atBats.find(
+        item => String(item.id) === String(editingAtBatId)
       );
 
-    const tr =
-      document.createElement("tr");
+      if (!atBat) {
+        cancelAtBatEdit();
+        return;
+      }
 
-    tr.innerHTML = `
-      <td>${gameId}</td>
-      <td>${result}</td>
-      <td>${direction}</td>
-      <td>${battedBallType}</td>
-      <td>${rbi}</td>
-      <td>
-        <button class="deleteBtn">
-          削除
-        </button>
-      </td>
-    `;
+      Object.assign(atBat, atBatData);
+      cancelAtBatEdit();
+    } else {
+      const id = atBats.reduce(
+        (maxId, atBat) => Math.max(maxId, Number(atBat.id) || 0),
+        Date.now() - 1
+      ) + 1;
 
-    tr.querySelector(".deleteBtn")
-  .addEventListener("click", () => {
+      atBats.push({
+        id,
+        ...atBatData
+      });
+    }
 
-    tr.remove();
-
-    atBats = atBats.filter(
-  item => item.id !== atBat.id
-);
-
-    localStorage.setItem(
-      "atBats",
-      JSON.stringify(atBats)
-    );
-
-    updateStats();
-
+    localStorage.setItem("atBats", JSON.stringify(atBats));
+    loadAtBats();
   });
 
+document.getElementById("cancelAtBatEditBtn")
+  .addEventListener("click", cancelAtBatEdit);
 
-      const atBat = {
-  id: Date.now(),
-  gameId,
-  result,
-  direction,
-  battedBallType,
-  rbi
-};
+function cancelAtBatEdit() {
+  editingAtBatId = null;
+  document.getElementById("result").value = "単打";
+  document.getElementById("direction").value = "投手方向";
+  document.getElementById("battedBallType").value = "ゴロ";
+  document.getElementById("addAtBatBtn").textContent = "打席を追加";
+  document.getElementById("cancelAtBatEditBtn").hidden = true;
+  document.getElementById("rbi").value = "0";
+}
 
+function startAtBatEdit(atBatId) {
+  const atBat = atBats.find(
+    item => String(item.id) === String(atBatId)
+  );
 
-atBats.push(atBat);
+  if (!atBat) {
+    return;
+  }
 
-localStorage.setItem(
-  "atBats",
-  JSON.stringify(atBats)
-);
+  editingAtBatId = atBat.id;
+  document.getElementById("gameSelect").value = atBat.gameId;
+  document.getElementById("result").value = atBat.result;
+  document.getElementById("direction").value =
+    atBat.direction === "-" ? "投手方向" : atBat.direction;
+  document.getElementById("battedBallType").value =
+    atBat.battedBallType === "-" ? "ゴロ" : atBat.battedBallType;
+  document.getElementById("rbi").value = atBat.rbi;
+  document.getElementById("addAtBatBtn").textContent = "打席を更新";
+  document.getElementById("cancelAtBatEditBtn").hidden = false;
+  document.getElementById("result").focus();
+}
 
-tbody.appendChild(tr);
+function deleteAtBat(atBatId) {
+  const atBat = atBats.find(
+    item => String(item.id) === String(atBatId)
+  );
 
-updateStats();
+  if (!atBat) {
+    return;
+  }
 
+  const game = games.find(
+    item => String(item.id) === String(atBat.gameId)
+  );
+  const gameName = game
+    ? `${game.opponent} (${game.date})`
+    : `試合ID ${atBat.gameId}`;
+  const message =
+    `「${gameName}」の「${atBat.result}」を削除しますか？この打席だけが削除されます。`;
+
+  if (!window.confirm(message)) {
+    return;
+  }
+
+  atBats = atBats.filter(
+    item => String(item.id) !== String(atBatId)
+  );
+
+  if (String(editingAtBatId) === String(atBatId)) {
+    cancelAtBatEdit();
+  }
+
+  localStorage.setItem("atBats", JSON.stringify(atBats));
+  loadAtBats();
+}
+
+function renderAtBatRow(atBat) {
+  const row = document.createElement("tr");
+  const gameCell = row.insertCell();
+  const game = games.find(
+    item => String(item.id) === String(atBat.gameId)
+  );
+  gameCell.textContent = game
+    ? `${game.opponent} (${game.date})`
+    : atBat.gameId;
+
+  [
+    atBat.result,
+    atBat.direction,
+    atBat.battedBallType,
+    atBat.rbi
+  ].forEach(value => {
+    row.insertCell().textContent = value;
   });
+
+  const actionCell = row.insertCell();
+  const editButton = document.createElement("button");
+  editButton.type = "button";
+  editButton.className = "edit-at-bat-button";
+  editButton.textContent = "編集";
+  editButton.addEventListener("click", () => {
+    startAtBatEdit(atBat.id);
+  });
+  actionCell.appendChild(editButton);
+
+  const deleteButton = document.createElement("button");
+  deleteButton.type = "button";
+  deleteButton.className = "delete-at-bat-button";
+  deleteButton.textContent = "削除";
+  deleteButton.addEventListener("click", () => {
+    deleteAtBat(atBat.id);
+  });
+  actionCell.appendChild(deleteButton);
+
+  return row;
+}
 
 function updateStats() {
 
@@ -418,43 +534,7 @@ function loadAtBats() {
   tbody.innerHTML = "";
 
   atBats.forEach(atBat => {
-
-    const tr =
-      document.createElement("tr");
-
-    tr.innerHTML = `
-      <td>${atBat.gameId}</td>
-      <td>${atBat.result}</td>
-      <td>${atBat.direction}</td>
-      <td>${atBat.battedBallType}</td>
-      <td>${atBat.rbi}</td>
-      <td>
-        <button class="deleteBtn">
-          削除
-        </button>
-      </td>
-    `;
-
-    tr.querySelector(".deleteBtn")
-  .addEventListener("click", () => {
-
-    tr.remove();
-
-    atBats = atBats.filter(
-      item => item.id !== atBat.id
-    );
-
-    localStorage.setItem(
-      "atBats",
-      JSON.stringify(atBats)
-    );
-
-    updateStats();
-
-  });
-
-    tbody.appendChild(tr);
-
+    tbody.appendChild(renderAtBatRow(atBat));
   });
 
   updateStats();
