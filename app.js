@@ -223,12 +223,15 @@ function formatRate(value) {
 function calculateStats(records) {
   let atBatsCount = 0;
   let hits = 0;
+  let homeRuns = 0;
   let totalBases = 0;
   let walks = 0;
   let hitByPitch = 0;
+  let rbi = 0;
 
   records.forEach(atBat => {
     const result = atBat.result;
+    rbi += Number(atBat.rbi) || 0;
 
     if (result === "単打") {
       hits++;
@@ -244,6 +247,7 @@ function calculateStats(records) {
       atBatsCount++;
     } else if (result === "本塁打") {
       hits++;
+      homeRuns++;
       totalBases += 4;
       atBatsCount++;
     } else if ([
@@ -279,6 +283,8 @@ function calculateStats(records) {
   return {
     atBatsCount,
     hits,
+    homeRuns,
+    rbi,
     avg: formatRate(avg),
     slg: formatRate(slg),
     obp: formatRate(obp),
@@ -574,6 +580,12 @@ function updateStats() {
 
   document.getElementById("hits").textContent =
     stats.hits;
+
+  document.getElementById("homeRuns").textContent =
+    stats.homeRuns;
+
+  document.getElementById("careerRbi").textContent =
+    stats.rbi;
 
   document.getElementById("avg").textContent =
     stats.avg;

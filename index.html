@@ -9,7 +9,10 @@
 
 <body>
 
-  <h1>野球スタッツ管理ツール</h1>
+  <header class="app-header">
+    <h1>野球スタッツ管理ツール</h1>
+    <p>打率・OPS・打球方向を記録、分析するWebアプリ</p>
+  </header>
 
   <nav class="view-tabs" role="tablist" aria-label="表示画面">
     <button id="inputTab" class="view-tab active" type="button" role="tab" aria-selected="true" aria-controls="inputView" data-view="inputView">入力</button>
@@ -19,91 +22,89 @@
 
   <main>
     <section id="inputView" class="app-view" role="tabpanel" aria-labelledby="inputTab">
-      <h2>試合情報</h2>
+      <h2>試合情報入力</h2>
 
-      <label>
-        対戦相手：
-        <input id="opponent" type="text">
-      </label>
+      <div class="game-info-fields">
+        <label>
+          対戦相手：
+          <input id="opponent" type="text">
+        </label>
 
-      <label>
-        日付：
-        <input id="date" type="date">
-      </label>
+        <label>
+          日付：
+          <input id="date" type="date">
+        </label>
 
-      <label>
-        場所：
-        <input id="location" type="text">
-      </label>
+        <label>
+          場所：
+          <input id="location" type="text">
+        </label>
+      </div>
 
-      <button id="addGameBtn" type="button">試合を追加</button>
-      <button id="cancelGameEditBtn" type="button" hidden>編集をキャンセル</button>
+      <div class="game-info-actions">
+        <button id="addGameBtn" type="button">試合を追加</button>
+        <button id="cancelGameEditBtn" type="button" hidden>編集をキャンセル</button>
+      </div>
 
       <hr>
 
       <h2>打席入力</h2>
 
-      <label>
-        試合選択：
-        <select id="gameSelect"></select>
-      </label>
+      <div class="at-bat-fields">
+        <label>
+          試合選択：
+          <select id="gameSelect"></select>
+        </label>
 
-      <br><br>
+        <label>
+          結果：
+          <select id="result">
+            <option>単打</option>
+            <option>二塁打</option>
+            <option>三塁打</option>
+            <option>本塁打</option>
+            <option>ゴロ</option>
+            <option>フライ</option>
+            <option>三振</option>
+            <option>四球</option>
+            <option>死球</option>
+          </select>
+        </label>
 
-      <label>
-        結果：
-        <select id="result">
-          <option>単打</option>
-          <option>二塁打</option>
-          <option>三塁打</option>
-          <option>本塁打</option>
-          <option>ゴロ</option>
-          <option>フライ</option>
-          <option>三振</option>
-          <option>四球</option>
-          <option>死球</option>
-        </select>
-      </label>
+        <label>
+          方向：
+          <select id="direction">
+            <option>投手方向</option>
+            <option>捕手方向</option>
+            <option>一塁方向</option>
+            <option>二塁方向</option>
+            <option>三塁方向</option>
+            <option>遊撃方向</option>
+            <option>左翼方向</option>
+            <option>中堅方向</option>
+            <option>右翼方向</option>
+          </select>
+        </label>
 
-      <br><br>
+        <label>
+          打球種類：
+          <select id="battedBallType">
+            <option>ゴロ</option>
+            <option>フライ</option>
+            <option>ライナー</option>
+          </select>
+        </label>
 
-      <label>
-        方向：
-        <select id="direction">
-          <option>投手方向</option>
-          <option>捕手方向</option>
-          <option>一塁方向</option>
-          <option>二塁方向</option>
-          <option>三塁方向</option>
-          <option>遊撃方向</option>
-          <option>左翼方向</option>
-          <option>中堅方向</option>
-          <option>右翼方向</option>
-        </select>
-      </label>
+        <label>
+          打点：
+          <input id="rbi" type="number" value="0">
+        </label>
+      </div>
 
-      <br><br>
-
-      <label>
-        打球種類：
-        <select id="battedBallType">
-          <option>ゴロ</option>
-          <option>フライ</option>
-          <option>ライナー</option>
-        </select>
-      </label>
-
-      <br><br>
-
-      <label>
-        打点：
-        <input id="rbi" type="number" value="0">
-      </label>
-
-      <br><br>
-
-      <button id="addAtBatBtn" type="button">打席を追加</button>
-      <button id="cancelAtBatEditBtn" type="button" hidden>編集をキャンセル</button>
+      <div class="at-bat-actions">
+        <button id="addAtBatBtn" type="button">打席を追加</button>
+        <button id="cancelAtBatEditBtn" type="button" hidden>編集をキャンセル</button>
+      </div>
 
       <hr>
 
@@ -128,13 +129,35 @@
     <section id="careerView" class="app-view" role="tabpanel" aria-labelledby="careerTab" hidden>
       <h2>通算成績</h2>
 
-      <div id="stats">
-        <p>打数：<span id="ab">0</span></p>
-        <p>安打：<span id="hits">0</span></p>
-        <p>打率：<span id="avg">.000</span></p>
-        <p>長打率（SLG）：<span id="slg">.000</span></p>
-        <p>出塁率：<span id="obp">.000</span></p>
-        <p>OPS：<span id="ops">.000</span></p>
+      <div id="stats" class="table-container">
+        <table id="careerStatsTable">
+          <tbody>
+            <tr>
+              <th scope="row">打率</th>
+              <td id="avg">.000</td>
+              <th scope="row">打数</th>
+              <td id="ab">0</td>
+            </tr>
+            <tr>
+              <th scope="row">安打</th>
+              <td id="hits">0</td>
+              <th scope="row">本塁打</th>
+              <td id="homeRuns">0</td>
+            </tr>
+            <tr>
+              <th scope="row">打点</th>
+              <td id="careerRbi">0</td>
+              <th scope="row">OPS</th>
+              <td id="ops">.000</td>
+            </tr>
+            <tr>
+              <th scope="row">長打率</th>
+              <td id="slg">.000</td>
+              <th scope="row">出塁率</th>
+              <td id="obp">.000</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="direction-stats">

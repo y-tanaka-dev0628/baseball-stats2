@@ -1,6 +1,21 @@
 body{
+  --card-shadow:0 5px 14px rgba(35, 65, 35, .24), 0 2px 4px rgba(35, 65, 35, .12);
+  background-color:#edf5e8;
+  color:#222;
   font-family:sans-serif;
   margin:20px;
+}
+
+.app-header h1{
+  font-size:48px;
+  font-weight:bold;
+  letter-spacing:2px;
+  margin-bottom:8px;
+}
+
+.app-header p{
+  color:#526052;
+  margin:0 0 20px;
 }
 
 .view-tabs{
@@ -34,13 +49,63 @@ body{
   display:none;
 }
 
+.game-info-fields label,
+.at-bat-fields label{
+  display:block;
+  margin-bottom:12px;
+}
+
+.game-info-fields label:last-child,
+.at-bat-fields label:last-child{
+  margin-bottom:0;
+}
+
+.game-info-actions,
+.at-bat-actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
 table{
+  background:#fff;
   border-collapse:collapse;
   width:100%;
 }
 
+#stats{
+  width:680px;
+  max-width:100%;
+}
+
 .table-container{
   overflow-x:auto;
+}
+
+#stats{
+  box-shadow:var(--card-shadow);
+}
+
+#inputView > .table-container,
+#gameStatsView > .table-container{
+  box-shadow:var(--card-shadow);
+}
+
+#careerStatsTable{
+  table-layout:fixed;
+}
+
+#careerStatsTable th{
+  background:#f2f5f8;
+  text-align:left;
+  white-space:nowrap;
+  width:22%;
+}
+
+#careerStatsTable td{
+  font-size:1.1em;
+  font-weight:bold;
+  width:28%;
 }
 
 .direction-stats{
@@ -52,6 +117,10 @@ table{
 
 .direction-stats h3{
   margin-bottom:8px;
+}
+
+.direction-stats .table-container{
+  box-shadow:var(--card-shadow);
 }
 
 .spray-chart{
