@@ -71,6 +71,7 @@
         方向：
         <select id="direction">
           <option>投手方向</option>
+          <option>捕手方向</option>
           <option>一塁方向</option>
           <option>二塁方向</option>
           <option>三塁方向</option>
@@ -134,6 +135,38 @@
         <p>長打率（SLG）：<span id="slg">.000</span></p>
         <p>出塁率：<span id="obp">.000</span></p>
         <p>OPS：<span id="ops">.000</span></p>
+      </div>
+
+      <div class="direction-stats">
+        <div>
+          <h3>打球方向別集計</h3>
+          <div class="table-container">
+            <table id="directionStatsTable">
+              <thead>
+                <tr>
+                  <th>方向</th>
+                  <th>本数</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <h3>打球方向ランキング</h3>
+          <div class="table-container">
+            <table id="directionRankingTable">
+              <thead>
+                <tr>
+                  <th>順位</th>
+                  <th>方向</th>
+                  <th>本数</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </section>
 

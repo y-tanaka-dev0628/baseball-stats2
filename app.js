@@ -14,6 +14,17 @@ let games =
 let editingGameId = null;
 let editingAtBatId = null;
 let expandedGameId = null;
+const fieldingDirections = [
+  "投手方向",
+  "捕手方向",
+  "一塁方向",
+  "二塁方向",
+  "三塁方向",
+  "遊撃方向",
+  "左翼方向",
+  "中堅方向",
+  "右翼方向"
+];
 
 function activateView(activeViewId) {
   document.querySelectorAll(".view-tab").forEach(tab => {
@@ -576,8 +587,45 @@ function updateStats() {
   document.getElementById("ops").textContent =
     stats.ops;
 
+  updateDirectionStats();
   updateGameList();
 
+}
+
+function updateDirectionStats() {
+  const counts = new Map(
+    fieldingDirections.map(direction => [direction, 0])
+  );
+
+  atBats.forEach(atBat => {
+    if (counts.has(atBat.direction)) {
+      counts.set(atBat.direction, counts.get(atBat.direction) + 1);
+    }
+  });
+
+  const tbody =
+    document.querySelector("#directionStatsTable tbody");
+  tbody.innerHTML = "";
+
+  fieldingDirections.forEach(direction => {
+    const row = tbody.insertRow();
+    row.insertCell().textContent = direction;
+    row.insertCell().textContent = counts.get(direction);
+  });
+
+  const rankingBody =
+    document.querySelector("#directionRankingTable tbody");
+  rankingBody.innerHTML = "";
+
+  [...counts.entries()]
+    .map(([direction, count], order) => ({ direction, count, order }))
+    .sort((a, b) => b.count - a.count || a.order - b.order)
+    .forEach(({ direction, count }, index) => {
+      const row = rankingBody.insertRow();
+      row.insertCell().textContent = index + 1;
+      row.insertCell().textContent = direction;
+      row.insertCell().textContent = count;
+    });
 }
 
 function loadAtBats() {
