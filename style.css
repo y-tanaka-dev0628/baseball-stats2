@@ -77,9 +77,29 @@ table{
 
 .edit-at-bat-button:focus-visible,
 .delete-game-button:focus-visible,
-.delete-at-bat-button:focus-visible{
+.delete-at-bat-button:focus-visible,
+.game-at-bats-toggle:focus-visible{
   outline:2px solid #222;
   outline-offset:2px;
+}
+
+.game-at-bats-toggle{
+  background:none;
+  border:0;
+  color:#1565c0;
+  cursor:pointer;
+  font:inherit;
+  padding:0;
+  text-decoration:underline;
+}
+
+.game-at-bats-row > td{
+  background:#f7f9fc;
+  padding:12px;
+}
+
+.game-at-bats-table{
+  background:#fff;
 }
 
 th,td{

@@ -13,6 +13,7 @@ let games =
 
 let editingGameId = null;
 let editingAtBatId = null;
+let expandedGameId = null;
 
 function activateView(activeViewId) {
   document.querySelectorAll(".view-tab").forEach(tab => {
@@ -294,10 +295,11 @@ function updateGameList() {
     );
     const stats = calculateStats(gameAtBats);
     const row = tbody.insertRow();
+    const isExpanded = String(expandedGameId) === String(game.id);
 
     [
       game.date || "未設定",
-      game.opponent || "未設定",
+      null,
       game.location || "未設定",
       stats.atBatsCount,
       stats.hits,
@@ -305,8 +307,22 @@ function updateGameList() {
       stats.obp,
       stats.slg,
       stats.ops
-    ].forEach(value => {
-      row.insertCell().textContent = value;
+    ].forEach((value, index) => {
+      const cell = row.insertCell();
+      if (index === 1) {
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "game-at-bats-toggle";
+        toggle.textContent = game.opponent || "未設定";
+        toggle.setAttribute("aria-expanded", String(isExpanded));
+        toggle.addEventListener("click", () => {
+          expandedGameId = isExpanded ? null : game.id;
+          updateGameList();
+        });
+        cell.appendChild(toggle);
+      } else {
+        cell.textContent = value;
+      }
     });
 
     const actionCell = row.insertCell();
@@ -326,6 +342,46 @@ function updateGameList() {
       deleteGame(game.id);
     });
     actionCell.appendChild(deleteButton);
+
+    if (isExpanded) {
+      const detailRow = tbody.insertRow();
+      detailRow.className = "game-at-bats-row";
+      const detailCell = detailRow.insertCell();
+      detailCell.colSpan = 10;
+
+      const detailTable = document.createElement("table");
+      detailTable.id = `game-at-bats-${game.id}`;
+      detailTable.className = "game-at-bats-table";
+      const header = detailTable.createTHead().insertRow();
+      ["打席", "結果", "方向", "打球種類", "打点"].forEach(label => {
+        const th = document.createElement("th");
+        th.textContent = label;
+        header.appendChild(th);
+      });
+
+      const detailBody = detailTable.createTBody();
+      if (gameAtBats.length === 0) {
+        const emptyRow = detailBody.insertRow();
+        const emptyCell = emptyRow.insertCell();
+        emptyCell.colSpan = 5;
+        emptyCell.textContent = "この試合の打席データはありません";
+      } else {
+        gameAtBats.forEach((atBat, index) => {
+          const atBatRow = detailBody.insertRow();
+          [
+            index + 1,
+            atBat.result,
+            atBat.direction,
+            atBat.battedBallType,
+            atBat.rbi
+          ].forEach(value => {
+            atBatRow.insertCell().textContent = value;
+          });
+        });
+      }
+
+      detailCell.appendChild(detailTable);
+    }
   });
 }
 
