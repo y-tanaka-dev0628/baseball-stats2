@@ -167,6 +167,47 @@
             </table>
           </div>
         </div>
+        <div>
+          <h3>打球方向スプレーチャート</h3>
+          <svg class="spray-chart" viewBox="0 0 360 280" role="img" aria-labelledby="sprayChartTitle sprayChartDescription">
+            <title id="sprayChartTitle">打球方向スプレーチャート</title>
+            <desc id="sprayChartDescription">フィールド上に方向ごとの打球数を表示します。印の位置は実際の落下位置ではありません。</desc>
+            <path class="spray-field" d="M180 224 L38 82 Q180 -48 322 82 Z"></path>
+            <path class="spray-infield" d="M180 224 L245 159 L180 94 L115 159 Z"></path>
+            <circle class="spray-base" cx="180" cy="224" r="4"></circle>
+            <circle class="spray-base" cx="245" cy="159" r="4"></circle>
+            <circle class="spray-base" cx="180" cy="94" r="4"></circle>
+            <circle class="spray-base" cx="115" cy="159" r="4"></circle>
+            <g class="spray-marker" data-direction="左翼方向" transform="translate(103 84)">
+              <title></title><circle r="15"></circle><text class="spray-count" y="5">0</text><text class="spray-label" y="31">左翼</text>
+            </g>
+            <g class="spray-marker" data-direction="中堅方向" transform="translate(180 43)">
+              <title></title><circle r="15"></circle><text class="spray-count" y="5">0</text><text class="spray-label" y="31">中堅</text>
+            </g>
+            <g class="spray-marker" data-direction="右翼方向" transform="translate(257 84)">
+              <title></title><circle r="15"></circle><text class="spray-count" y="5">0</text><text class="spray-label" y="31">右翼</text>
+            </g>
+            <g class="spray-marker" data-direction="三塁方向" transform="translate(122 159)">
+              <title></title><circle r="15"></circle><text class="spray-count" y="5">0</text><text class="spray-label" y="31">三塁</text>
+            </g>
+            <g class="spray-marker" data-direction="遊撃方向" transform="translate(150 112)">
+              <title></title><circle r="15"></circle><text class="spray-count" y="5">0</text><text class="spray-label" y="31">遊撃</text>
+            </g>
+            <g class="spray-marker" data-direction="二塁方向" transform="translate(210 112)">
+              <title></title><circle r="15"></circle><text class="spray-count" y="5">0</text><text class="spray-label" y="31">二塁</text>
+            </g>
+            <g class="spray-marker" data-direction="一塁方向" transform="translate(238 159)">
+              <title></title><circle r="15"></circle><text class="spray-count" y="5">0</text><text class="spray-label" y="31">一塁</text>
+            </g>
+            <g class="spray-marker" data-direction="投手方向" transform="translate(180 159)">
+              <title></title><circle r="15"></circle><text class="spray-count" y="5">0</text><text class="spray-label" y="31">投手</text>
+            </g>
+            <g class="spray-marker" data-direction="捕手方向" transform="translate(180 224)">
+              <title></title><circle r="15"></circle><text class="spray-count" y="5">0</text><text class="spray-label" y="31">捕手</text>
+            </g>
+          </svg>
+          <p class="spray-chart-note">方向ごとの打球数です（印は実際の落下位置ではありません）。</p>
+        </div>
       </div>
     </section>
 

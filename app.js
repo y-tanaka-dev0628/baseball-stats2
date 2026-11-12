@@ -626,6 +626,19 @@ function updateDirectionStats() {
       row.insertCell().textContent = direction;
       row.insertCell().textContent = count;
     });
+
+  document.querySelectorAll(".spray-marker").forEach(marker => {
+    const direction = marker.dataset.direction;
+    const count = counts.get(direction);
+    const circle = marker.querySelector("circle");
+    const countLabel = marker.querySelector(".spray-count");
+    const title = marker.querySelector("title");
+
+    circle.setAttribute("r", String(15 + Math.min(count, 10)));
+    countLabel.textContent = count;
+    title.textContent = `${direction}：${count}本`;
+    marker.setAttribute("aria-label", title.textContent);
+  });
 }
 
 function loadAtBats() {
